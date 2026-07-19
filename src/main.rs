@@ -1,120 +1,77 @@
-fn main() {
-    let shell_name = String::from("bash");
-    let greeting = build_greeting(&shell_name);
+use std::io;
+use crossterm::event::{self, Event, KeyCode};
+use ratatui::{
+    layout::{Constraint, Direction, Layout},
+    widgets::{Block, Borders, Paragraph},
+    DefaultTerminal,
+};
 
-    println!("{}", greeting);
-    println!("Your shell is: {}", shell_name); // this line will fail to compile
+struct App {
+    current_command:String,
+    terminal_log : Vec<String>,
 }
 
-fn build_greeting(name: &String) -> String {
-    format!("Hello from {}", name)
+impl App{
+    fn new() -> App {
+        App {
+            current_command: String::new(),
+            terminal_log : Vec::new()}
+    }
+
+    fn type_char(&mut self, c : char){
+        self.current_command.push(c);
+    }
+
+    fn backspace(&mut self){
+            self.current_command.pop();
+    }
+
+    fn submit(&mut self){
+        self.terminal_log.push(self.current_command.clone());
+        self.current_command.clear();
+    }
 }
 
+fn main() -> io::Result<()> {
 
+    let mut terminal = ratatui::init(); // setup: raw mode + alternate screen, in one call
+    let result = run(&mut terminal);
+    ratatui::restore(); // teardown: guaranteed to undo setup
+    result
+}
 
+fn run(terminal: &mut DefaultTerminal) -> io::Result<()> {
+    let mut app = App::new();
 
+    loop {
+        terminal.draw(|frame| {
+            let chunks = Layout::default()
+                .direction(Direction::Vertical)
+                .constraints([
+                    Constraint::Min(1),    // history area: take all remaining space
+                    Constraint::Length(3), // input area: exactly 3 lines tall
+                ])
+                .split(frame.area());
 
+            let history_text = app.terminal_log.join("\n");
+            let history = Paragraph::new(history_text)
+                .block(Block::default().title("bonzai").borders(Borders::ALL));
+            frame.render_widget(history, chunks[0]);
 
+            let input = Paragraph::new(app.current_command.as_str())
+                .block(Block::default().title("input").borders(Borders::ALL));
+            frame.render_widget(input, chunks[1]);
+        })?;
 
-
-
-
-
-
-// use std::io; // Library to input standard input and output
-
-// fn execute (choice : i32, number1 : f32, number2 : f32){
-
-//     if choice == 1 {
-//         let out = number1 + number2;
-//         println!("The sum of {number1} and {number2} is: {out}");
-//     } 
-    
-//     else if choice == 2 {
-//         let out = number1 - number2;
-//         println!("The difference of {number1} and {number2} is: {out}");
-//     }
-
-//     else if choice == 3 {
-//         let out = number1 * number2;
-//         println!("The product of {number1} and {number2} is: {out}");
-//     }
-
-//     else if choice == 4 {
-//         let out = number1 / number2;
-//         println!("The division of {number1} and {number2} is: {out}");
-//     }
-
-//     else {
-//         println!("An error occured! Please try again!");
-//     }
-// }
-
-// fn main() {
-
-//     // println!("Guess the Number Game");
-
-//     // println!("Please input your guess.");
-
-//     // let mut guess = String::new(); // defining a mutable variable guess (mutable variables are the ones that can be changed after assigning)
-
-//     // io::stdin()
-//     //     .read_line(&mut guess)
-//     //     .expect("Failed to read the line!");
-    
-//     // println!("You guesses : {guess}");
-
-//     // Calculator
-
-//     let lne = "========================================================================";
-//     println!("{lne}");
-//     println!("Rust Calculator");
-//     println!("{lne}");
-
-//     let options = "\n
-    
-//     Choose the operation:
-
-//     [1] Add
-//     [2] Subtract
-//     [3] Multiply
-//     [4] Divide
-
-//     ";  // By default, the strings are multiline in rust
-    
-//     println!("{options}");
-//     let mut chosen = String::new();
-//     let mut x = String::new();
-//     let mut y = String::new();
-    
-//     io::stdin()
-//         .read_line(&mut chosen)
-//         .expect("Failed to read line");
-
-//     let choice : i32 = chosen
-//         .trim()
-//         .parse()
-//         .expect("Please enter a valid type!");
-
-//     io::stdin()
-//         .read_line(&mut x)
-//         .expect("Failed to read line");
-
-//     let number1 : f32 = x
-//         .trim()
-//         .parse()
-//         .expect("Please enter a valid type!");
-
-//     io::stdin()
-//         .read_line(&mut y)
-//         .expect("Failed to read line");
-
-//     let number2 : f32 = y
-//         .trim()
-//         .parse()
-//         .expect("Please enter a valid type!");
-
-//     println!("{lne}");
-//     execute(choice, number1, number2);
-//     }
-
+        if let Event::Key(key) = event::read()? {
+            match key.code {
+                KeyCode::Esc => break,
+                KeyCode::Backspace => app.backspace(),
+                KeyCode::Char(c) => app.type_char(c),
+                KeyCode::Enter => app.submit(),
+                _ => {}
+            }
+        }
+    }
+    Ok(())
+}
