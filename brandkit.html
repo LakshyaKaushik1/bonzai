@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Parakeet Agent — Color System</title>
+    <style>
+        :root {
+            --pk-green: #5FB85C;
+            --pk-green-d: #3F8A3D;
+            --pk-green-l: #7FD07C;
+            --pk-rose: #E85D8A;
+            --pk-rose-d: #B8406A;
+            --pk-rose-l: #F58AAE;
+            --pk-black: #1A1D1A;
+            --pk-coral: #E0563D;
+            --pk-coral-d: #B03D28;
+            --pk-teal: #3FA396;
+            --pk-teal-d: #2C7A70;
+            --pk-teal-l: #6FC4B8;
+            --pk-yellow: #B8D468;
+            --pk-yellow-d: #8FAA46;
+            --pk-cream: #F0EDE4;
+            --pk-charcoal: #1E211D;
+            --pk-charcoal-2: #272B26;
+            --pk-charcoal-3: #333830;
+            --pk-fg-dark: #E9E6DC;
+            --pk-fg-dim: #9A9C93;
+            --pk-fg-light: #20231F;
+            --pk-fg-light-dim: #5C5F56;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2b2b28;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 600;
+            margin: 0 0 4px;
+            letter-spacing: -0.01em;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 40px 0 6px;
+            padding-top: 20px;
+            border-top: 1px solid #e3e0d5;
+        }
+
+        h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: #6b6b63;
+        }
+
+        p.sub {
+            color: #6b6b63;
+            margin: 0 0 8px;
+            font-size: 14px;
+        }
+
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 80px;
+        }
+
+        .tagline {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .tagline .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--pk-green);
+            box-shadow: 0 0 0 4px rgba(95, 184, 92, .15);
+        }
+
+        /* palette swatches */
+        .swatch-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 14px 0 26px;
+        }
+
+        .swatch {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, .08);
+        }
+
+        .swatch .block {
+            height: 64px;
+        }
+
+        .swatch .label {
+            background: #fff;
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .swatch .label b {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .swatch .label code {
+            font-size: 11px;
+            color: #777;
+        }
+
+        /* semantic tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 8px 0 20px;
+            font-size: 13.5px;
+        }
+
+        th {
+            text-align: left;
+            padding: 8px 10px;
+            background: #efece2;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: #6b6b63;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #ece9de;
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+
+        .swab {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex: none;
+            display: inline-block;
+        }
+
+        .hexcode {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 12px;
+            color: #7a7a72;
+        }
+
+        /* terminal mockup */
+        .term-toggle {
+            display: flex;
+            gap: 8px;
+            margin: 14px 0;
+        }
+
+        .term-toggle button {
+            border: 1px solid #d8d4c6;
+            background: #fff;
+            padding: 6px 14px;
+            border-radius: 7px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .term-toggle button.active {
+            background: var(--pk-black);
+            color: #fff;
+            border-color: var(--pk-black);
+        }
+
+        .term-toggle button.active.light-active {
+            background: var(--pk-cream);
+            color: var(--pk-black);
+            border-color: #c9c4b0;
+        }
+
+        .terminal {
+            border-radius: 12px;
+            padding: 0;
+            overflow: hidden;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 13px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .18);
+        }
+
+        .term-bar {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+        }
+
+        .term-bar .tdot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .term-body {
+            padding: 18px 20px 24px;
+            white-space: pre-wrap;
+        }
+
+        .term-body .ln {
+            margin: 0 0 5px;
+        }
+
+        /* dark terminal */
+        #term-dark {
+            background: var(--pk-charcoal);
+            color: var(--pk-fg-dark);
+            display: block;
+        }
+
+        #term-dark .term-bar {
+            background: var(--pk-charcoal-2);
+        }
+
+        #term-dark .prompt {
+            color: var(--pk-green-l);
+            font-weight: 600;
+        }
+
+        #term-dark .usertext {
+            color: var(--pk-fg-dark);
+        }
+
+        #term-dark .muted {
+            color: var(--pk-fg-dim);
+        }
+
+        #term-dark .ok {
+            color: var(--pk-green-l);
+        }
+
+        #term-dark .err {
+            color: var(--pk-coral);
+        }
+
+        #term-dark .warn {
+            color: var(--pk-yellow);
+        }
+
+        #term-dark .info {
+            color: var(--pk-teal-l);
+        }
+
+        #term-dark .accent {
+            color: var(--pk-rose-l);
+        }
+
+        #term-dark .diffadd {
+            color: var(--pk-green-l);
+            background: rgba(95, 184, 92, .12);
+        }
+
+        #term-dark .diffdel {
+            color: var(--pk-coral);
+            background: rgba(224, 86, 61, .12);
+        }
+
+        #term-dark .divider {
+            color: var(--pk-charcoal-3);
+        }
+
+        #term-dark .toolcall {
+            color: var(--pk-teal-l);
+        }
+
+        #term-dark .path {
+            color: var(--pk-rose-l);
+            text-decoration: underline;
+        }
+
+        /* light terminal */
+        #term-light {
+            background: var(--pk-cream);
+            color: var(--pk-fg-light);
+            display: none;
+        }
+
+        #term-light .term-bar {
+            background: #e4e0d2;
+        }
+
+        #term-light .prompt {
+            color: var(--pk-green-d);
+            font-weight: 600;
+        }
+
+        #term-light .usertext {
+            color: var(--pk-fg-light);
+        }
+
+        #term-light .muted {
+            color: var(--pk-fg-light-dim);
+        }
+
+        #term-light .ok {
+            color: var(--pk-green-d);
+        }
+
+        #term-light .err {
+            color: var(--pk-coral-d);
+        }
+
+        #term-light .warn {
+            color: var(--pk-yellow-d);
+        }
+
+        #term-light .info {
+            color: var(--pk-teal-d);
+        }
+
+        #term-light .accent {
+            color: var(--pk-rose-d);
+        }
+
+        #term-light .diffadd {
+            color: var(--pk-green-d);
+            background: rgba(63, 138, 61, .10);
+        }
+
+        #term-light .diffdel {
+            color: var(--pk-coral-d);
+            background: rgba(176, 61, 40, .10);
+        }
+
+        #term-light .divider {
+            color: #c9c4b0;
+        }
+
+        #term-light .toolcall {
+            color: var(--pk-teal-d);
+        }
+
+        #term-light .path {
+            color: var(--pk-rose-d);
+            text-decoration: underline;
+        }
+
+        .contrast-note {
+            font-size: 12px;
+            color: #6b6b63;
+            background: #efece2;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin: 8px 0 22px;
+        }
+
+        .contrast-note b {
+            color: #2b2b28;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-top: 16px;
+            border-top: 1px solid #e3e0d5;
+            font-size: 12px;
+            color: #8a8a80;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+
+        <div class="tagline"><span class="dot"></span>
+            <h1>Parakeet Agent — Color System</h1>
+        </div>
+        <p class="sub">Derived from the rose-ringed parakeet: grass-green body, rose/black neck ring, coral beak, cool
+            teal undertones. Dark theme is primary; light is a complete secondary set.</p>
+
+        <h2>1. Core palette</h2>
+        <p class="sub">Every semantic color below is a tint/shade of one of these eight source colors — nothing
+            off-palette gets introduced later.</p>
+        <div class="swatch-row">
+            <div class="swatch">
+                <div class="block" style="background:#5FB85C"></div>
+                <div class="label"><b>Parakeet Green</b><code>#5FB85C</code><br><span class="hexcode">body plumage ·
+                        primary</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#E85D8A"></div>
+                <div class="label"><b>Ring Rose</b><code>#E85D8A</code><br><span class="hexcode">neck ring · signature
+                        accent</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#E0563D"></div>
+                <div class="label"><b>Beak Coral</b><code>#E0563D</code><br><span class="hexcode">beak · error</span>
+                </div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#3FA396"></div>
+                <div class="label"><b>Shadow Teal</b><code>#3FA396</code><br><span class="hexcode">wing undertone ·
+                        info</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#B8D468"></div>
+                <div class="label"><b>Cere Yellow-green</b><code>#B8D468</code><br><span class="hexcode">face highlight
+                        · warning</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#1A1D1A"></div>
+                <div class="label"><b>Ring Black</b><code>#1A1D1A</code><br><span class="hexcode">chin strap · deep
+                        neutral</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#1E211D"></div>
+                <div class="label"><b>Charcoal</b><code>#1E211D</code><br><span class="hexcode">dark-mode
+                        background</span></div>
+            </div>
+            <div class="swatch">
+                <div class="block" style="background:#F0EDE4;border-bottom:1px solid #ddd"></div>
+                <div class="label"><b>Feather Cream</b><code>#F0EDE4</code><br><span class="hexcode">light-mode
+                        background</span></div>
+            </div>
+        </div>
+
+        <h2 style="border-top:none;padding-top:0;margin-top:20px;">Signature glyph strip</h2>
+        <div class="swatch-row" style="grid-template-columns:repeat(auto-fit,minmax(110px,1fr));">
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--pk-green-l);font-family:ui-monospace,monospace;">
+                    &#10095;</div>
+                <div class="label"><b>Prompt</b><code>U+276F</code></div>
+            </div>
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--pk-green-l);font-family:ui-monospace,monospace;">
+                    &#10003;</div>
+                <div class="label"><b>Success</b><code>U+2713</code></div>
+            </div>
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--pk-coral);font-family:ui-monospace,monospace;">
+                    &#10005;</div>
+                <div class="label"><b>Error</b><code>U+2715</code></div>
+            </div>
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--pk-yellow);font-family:ui-monospace,monospace;">
+                    &#9888;</div>
+                <div class="label"><b>Warning</b><code>U+26A0</code></div>
+            </div>
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--pk-teal-l);font-family:ui-monospace,monospace;">
+                    &#8505;</div>
+                <div class="label"><b>Info</b><code>U+2139</code></div>
+            </div>
+            <div class="swatch">
+                <div class="block"
+                    style="background:var(--pk-charcoal);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--pk-rose-l);font-family:ui-monospace,monospace;">
+                    &#9670;</div>
+                <div class="label"><b>Agent turn</b><code>U+25C6</code></div>
+            </div>
+        </div>
+
+        <h2>2. Live terminal preview</h2>
+        <p class="sub">Toggle to see both modes rendered as an actual TUI would show them.</p>
+        <div class="term-toggle">
+            <button id="btn-dark" class="active" onclick="showTerm('dark')">Dark mode</button>
+            <button id="btn-light" onclick="showTerm('light')">Light mode</button>
+        </div>
+
+        <div class="terminal" id="term-dark">
+            <div class="term-bar"><span class="tdot" style="background:#E0563D"></span><span class="tdot"
+                    style="background:#B8D468"></span><span class="tdot" style="background:#5FB85C"></span></div>
+            <div class="term-body">
+                <div class="ln"><span class="prompt">parakeet ❯</span> <span class="usertext">deploy staging
+                        --env=prod-mirror</span></div>
+                <div class="ln"><span class="toolcall">⚙ running:</span> <span class="usertext">terraform plan</span>
+                </div>
+                <div class="ln"><span class="muted"> reading state... 214 resources</span></div>
+                <div class="ln diffadd">+ aws_instance.web_3 will be created</div>
+                <div class="ln diffdel">- aws_instance.web_1 will be destroyed</div>
+                <div class="ln"><span class="warn">⚠ 1 resource requires manual approval</span></div>
+                <div class="ln"><span class="err">✕ error:</span> <span class="usertext">insufficient IAM permissions
+                        for </span><span class="path">/roles/deploy-prod</span></div>
+                <div class="ln"><span class="ok">✓ rollback complete</span> <span class="muted">(212ms)</span></div>
+                <div class="ln"><span class="info">ℹ agent:</span> <span class="usertext">want me to request the IAM
+                        permission update?</span></div>
+                <div class="ln divider">────────────────────────────────────────</div>
+                <div class="ln"><span class="accent">◆ parakeet</span> <span class="muted">· 3 tools used · session
+                        04m12s</span></div>
+                <div class="ln"><span class="prompt">parakeet ❯</span> <span class="muted" style="opacity:.5">▍</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="terminal" id="term-light">
+            <div class="term-bar"><span class="tdot" style="background:#E0563D"></span><span class="tdot"
+                    style="background:#B8D468"></span><span class="tdot" style="background:#5FB85C"></span></div>
+            <div class="term-body">
+                <div class="ln"><span class="prompt">parakeet ❯</span> <span class="usertext">deploy staging
+                        --env=prod-mirror</span></div>
+                <div class="ln"><span class="toolcall">⚙ running:</span> <span class="usertext">terraform plan</span>
+                </div>
+                <div class="ln"><span class="muted"> reading state... 214 resources</span></div>
+                <div class="ln diffadd">+ aws_instance.web_3 will be created</div>
+                <div class="ln diffdel">- aws_instance.web_1 will be destroyed</div>
+                <div class="ln"><span class="warn">⚠ 1 resource requires manual approval</span></div>
+                <div class="ln"><span class="err">✕ error:</span> <span class="usertext">insufficient IAM permissions
+                        for </span><span class="path">/roles/deploy-prod</span></div>
+                <div class="ln"><span class="ok">✓ rollback complete</span> <span class="muted">(212ms)</span></div>
+                <div class="ln"><span class="info">ℹ agent:</span> <span class="usertext">want me to request the IAM
+                        permission update?</span></div>
+                <div class="ln divider">────────────────────────────────────────</div>
+                <div class="ln"><span class="accent">◆ parakeet</span> <span class="muted">· 3 tools used · session
+                        04m12s</span></div>
+                <div class="ln"><span class="prompt">parakeet ❯</span> <span class="muted" style="opacity:.5">▍</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contrast-note"><b>Note:</b> every state below pairs color with a symbol (✓ ✕ ⚠ ℹ ⚙ ◆) — never color
+            alone — per WCAG guidance on non-text UI contrast (3:1 minimum) and not relying on color to carry meaning.
+        </div>
+
+        <h2>3. Full semantic mapping — dark mode (primary)</h2>
+        <h3>Prompt &amp; input</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Color</th>
+                <th>Hex</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Active prompt symbol (❯)</td>
+                <td><span class="chip" style="background:#22301f;color:#7FD07C"><span class="swab"
+                            style="background:#7FD07C"></span>Green (light)</span></td>
+                <td class="hexcode">#7FD07C</td>
+                <td>on charcoal: 9.1:1</td>
+            </tr>
+            <tr>
+                <td>User typed text</td>
+                <td><span class="chip" style="background:#22301f;color:#E9E6DC"><span class="swab"
+                            style="background:#E9E6DC"></span>Off-white</span></td>
+                <td class="hexcode">#E9E6DC</td>
+                <td>primary readable text, 13.8:1</td>
+            </tr>
+            <tr>
+                <td>Placeholder / hint text</td>
+                <td><span class="chip" style="background:#22301f;color:#9A9C93"><span class="swab"
+                            style="background:#9A9C93"></span>Dim gray-green</span></td>
+                <td class="hexcode">#9A9C93</td>
+                <td>4.6:1 — meets AA</td>
+            </tr>
+            <tr>
+                <td>Cursor block</td>
+                <td><span class="chip" style="background:#22301f;color:#7FD07C"><span class="swab"
+                            style="background:#7FD07C"></span>Green, blinking</span></td>
+                <td class="hexcode">#7FD07C</td>
+                <td>matches active prompt</td>
+            </tr>
+        </table>
+
+        <h3>Command states</h3>
+        <table>
+            <tr>
+                <th>State</th>
+                <th>Color</th>
+                <th>Hex</th>
+                <th>Symbol</th>
+            </tr>
+            <tr>
+                <td>Running / active</td>
+                <td><span class="chip" style="background:#1c332f;color:#6FC4B8"><span class="swab"
+                            style="background:#6FC4B8"></span>Teal (light)</span></td>
+                <td class="hexcode">#6FC4B8</td>
+                <td>⚙ spinner</td>
+            </tr>
+            <tr>
+                <td>Success</td>
+                <td><span class="chip" style="background:#22301f;color:#7FD07C"><span class="swab"
+                            style="background:#7FD07C"></span>Green (light)</span></td>
+                <td class="hexcode">#7FD07C</td>
+                <td>✓</td>
+            </tr>
+            <tr>
+                <td>Error / failed</td>
+                <td><span class="chip" style="background:#331f19;color:#E0563D"><span class="swab"
+                            style="background:#E0563D"></span>Beak Coral</span></td>
+                <td class="hexcode">#E0563D</td>
+                <td>✕</td>
+            </tr>
+            <tr>
+                <td>Cancelled / interrupted</td>
+                <td><span class="chip" style="background:#2b2b28;color:#9A9C93"><span class="swab"
+                            style="background:#9A9C93"></span>Dim gray-green</span></td>
+                <td class="hexcode">#9A9C93</td>
+                <td>⊘</td>
+            </tr>
+            <tr>
+                <td>Queued / pending</td>
+                <td><span class="chip" style="background:#332f1f;color:#B8D468"><span class="swab"
+                            style="background:#B8D468"></span>Cere Yellow-green</span></td>
+                <td class="hexcode">#B8D468</td>
+                <td>◷</td>
+            </tr>
+        </table>
+
+        <h3>History &amp; output</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Color</th>
+                <th>Hex</th>
+            </tr>
+            <tr>
+                <td>Past user commands (scrollback)</td>
+                <td><span class="chip" style="background:#22301f;color:#9A9C93"><span class="swab"
+                            style="background:#9A9C93"></span>Dimmed</span></td>
+                <td class="hexcode">#9A9C93</td>
+            </tr>
+            <tr>
+                <td>Past agent responses</td>
+                <td><span class="chip" style="background:#22301f;color:#E9E6DC"><span class="swab"
+                            style="background:#E9E6DC"></span>Off-white, slightly dimmed</span></td>
+                <td class="hexcode">#c9c6bc</td>
+            </tr>
+            <tr>
+                <td>Stdout (normal output)</td>
+                <td><span class="chip" style="background:#22301f;color:#E9E6DC"><span class="swab"
+                            style="background:#E9E6DC"></span>Off-white</span></td>
+                <td class="hexcode">#E9E6DC</td>
+            </tr>
+            <tr>
+                <td>Stderr</td>
+                <td><span class="chip" style="background:#331f19;color:#E0563D"><span class="swab"
+                            style="background:#E0563D"></span>Beak Coral</span></td>
+                <td class="hexcode">#E0563D</td>
+            </tr>
+            <tr>
+                <td>Warnings</td>
+                <td><span class="chip" style="background:#332f1f;color:#B8D468"><span class="swab"
+                            style="background:#B8D468"></span>Cere Yellow-green</span></td>
+                <td class="hexcode">#B8D468</td>
+            </tr>
+        </table>
+
+        <h3>Agent-specific</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Color</th>
+                <th>Hex</th>
+            </tr>
+            <tr>
+                <td>Agent "thinking" indicator</td>
+                <td><span class="chip" style="background:#2b1f28;color:#F58AAE"><span class="swab"
+                            style="background:#F58AAE"></span>Ring Rose (light)</span></td>
+                <td class="hexcode">#F58AAE</td>
+            </tr>
+            <tr>
+                <td>Tool-use call label</td>
+                <td><span class="chip" style="background:#1c332f;color:#6FC4B8"><span class="swab"
+                            style="background:#6FC4B8"></span>Teal (light)</span></td>
+                <td class="hexcode">#6FC4B8</td>
+            </tr>
+            <tr>
+                <td>Tool-use result block</td>
+                <td><span class="chip" style="background:#272B26;color:#c9c6bc"><span class="swab"
+                            style="background:#272B26;border:1px solid #444"></span>Charcoal-2 bg</span></td>
+                <td class="hexcode">bg #272B26</td>
+            </tr>
+            <tr>
+                <td>Diff — added lines</td>
+                <td><span class="chip" style="background:rgba(95,184,92,.15);color:#7FD07C"><span class="swab"
+                            style="background:#7FD07C"></span>Green + tint bg</span></td>
+                <td class="hexcode">#7FD07C</td>
+            </tr>
+            <tr>
+                <td>Diff — removed lines</td>
+                <td><span class="chip" style="background:rgba(224,86,61,.15);color:#E0563D"><span class="swab"
+                            style="background:#E0563D"></span>Coral + tint bg</span></td>
+                <td class="hexcode">#E0563D</td>
+            </tr>
+            <tr>
+                <td>File paths / inline refs</td>
+                <td><span class="chip" style="background:#2b1f28;color:#F58AAE;text-decoration:underline"><span
+                            class="swab" style="background:#F58AAE"></span>Ring Rose, underlined</span></td>
+                <td class="hexcode">#F58AAE</td>
+            </tr>
+            <tr>
+                <td>Permission / confirm prompt</td>
+                <td><span class="chip" style="background:#332f1f;color:#B8D468"><span class="swab"
+                            style="background:#B8D468"></span>Cere Yellow-green</span></td>
+                <td class="hexcode">#B8D468</td>
+            </tr>
+        </table>
+
+        <h3>Structural / chrome</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Color</th>
+                <th>Hex</th>
+            </tr>
+            <tr>
+                <td>Borders / dividers</td>
+                <td><span class="chip" style="background:#22301f;color:#333830"><span class="swab"
+                            style="background:#333830"></span>Charcoal-3</span></td>
+                <td class="hexcode">#333830</td>
+            </tr>
+            <tr>
+                <td>Status bar / footer</td>
+                <td><span class="chip" style="background:#272B26;color:#9A9C93"><span class="swab"
+                            style="background:#9A9C93"></span>Charcoal-2 bg, dim text</span></td>
+                <td class="hexcode">bg #272B26</td>
+            </tr>
+            <tr>
+                <td>Selected / highlighted item</td>
+                <td><span class="chip" style="background:#5FB85C;color:#12210f"><span class="swab"
+                            style="background:#12210f"></span>Green bg, dark text</span></td>
+                <td class="hexcode">bg #5FB85C</td>
+            </tr>
+            <tr>
+                <td>Disabled / inactive text</td>
+                <td><span class="chip" style="background:#22301f;color:#5a5c53"><span class="swab"
+                            style="background:#5a5c53"></span>Low-contrast gray</span></td>
+                <td class="hexcode">#5a5c53</td>
+            </tr>
+            <tr>
+                <td>Links / clickable refs</td>
+                <td><span class="chip" style="background:#1c332f;color:#6FC4B8;text-decoration:underline"><span
+                            class="swab" style="background:#6FC4B8"></span>Teal, underlined</span></td>
+                <td class="hexcode">#6FC4B8</td>
+            </tr>
+            <tr>
+                <td>Brand mark / logo accent</td>
+                <td><span class="chip" style="background:#2b1f28;color:#F58AAE"><span class="swab"
+                            style="background:#F58AAE"></span>Ring Rose</span></td>
+                <td class="hexcode">#F58AAE</td>
+            </tr>
+        </table>
+
+        <h2>4. Light mode variant (secondary set)</h2>
+        <p class="sub">Same source palette, shifted to darker/deeper stops for legibility on Feather Cream.</p>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Dark mode</th>
+                <th>Light mode</th>
+            </tr>
+            <tr>
+                <td>Prompt / cursor</td>
+                <td class="hexcode">#7FD07C</td>
+                <td><span class="chip" style="background:#e3f0e0;color:#3F8A3D"><span class="swab"
+                            style="background:#3F8A3D"></span>#3F8A3D</span></td>
+            </tr>
+            <tr>
+                <td>Success</td>
+                <td class="hexcode">#7FD07C</td>
+                <td><span class="chip" style="background:#e3f0e0;color:#3F8A3D"><span class="swab"
+                            style="background:#3F8A3D"></span>#3F8A3D</span></td>
+            </tr>
+            <tr>
+                <td>Error</td>
+                <td class="hexcode">#E0563D</td>
+                <td><span class="chip" style="background:#fbe9e5;color:#B03D28"><span class="swab"
+                            style="background:#B03D28"></span>#B03D28</span></td>
+            </tr>
+            <tr>
+                <td>Warning</td>
+                <td class="hexcode">#B8D468</td>
+                <td><span class="chip" style="background:#f4f7e6;color:#8FAA46"><span class="swab"
+                            style="background:#8FAA46"></span>#8FAA46</span></td>
+            </tr>
+            <tr>
+                <td>Info / tool-use</td>
+                <td class="hexcode">#6FC4B8</td>
+                <td><span class="chip" style="background:#e4f3f0;color:#2C7A70"><span class="swab"
+                            style="background:#2C7A70"></span>#2C7A70</span></td>
+            </tr>
+            <tr>
+                <td>Thinking / accent / paths</td>
+                <td class="hexcode">#F58AAE</td>
+                <td><span class="chip" style="background:#fbe8ef;color:#B8406A"><span class="swab"
+                            style="background:#B8406A"></span>#B8406A</span></td>
+            </tr>
+            <tr>
+                <td>Body text</td>
+                <td class="hexcode">#E9E6DC</td>
+                <td><span class="chip" style="background:#F0EDE4;color:#20231F"><span class="swab"
+                            style="background:#20231F"></span>#20231F</span></td>
+            </tr>
+            <tr>
+                <td>Dim / secondary text</td>
+                <td class="hexcode">#9A9C93</td>
+                <td><span class="chip" style="background:#F0EDE4;color:#5C5F56"><span class="swab"
+                            style="background:#5C5F56"></span>#5C5F56</span></td>
+            </tr>
+            <tr>
+                <td>Background</td>
+                <td class="hexcode">#1E211D</td>
+                <td><span class="chip" style="background:#F0EDE4;color:#8a8a80;border:1px solid #ddd"><span class="swab"
+                            style="background:#F0EDE4;border:1px solid #ccc"></span>#F0EDE4</span></td>
+            </tr>
+        </table>
+
+        <h2>5. Terminal ANSI reference</h2>
+        <p class="sub">For implementers using ANSI 256-color or truecolor escape codes.</p>
+        <table>
+            <tr>
+                <th>Role</th>
+                <th>Hex</th>
+                <th>Truecolor ANSI (fg)</th>
+            </tr>
+            <tr>
+                <td>Success / prompt (green)</td>
+                <td class="hexcode">#7FD07C</td>
+                <td class="hexcode">\x1b[38;2;127;208;124m</td>
+            </tr>
+            <tr>
+                <td>Error (coral)</td>
+                <td class="hexcode">#E0563D</td>
+                <td class="hexcode">\x1b[38;2;224;86;61m</td>
+            </tr>
+            <tr>
+                <td>Warning (yellow-green)</td>
+                <td class="hexcode">#B8D468</td>
+                <td class="hexcode">\x1b[38;2;184;212;104m</td>
+            </tr>
+            <tr>
+                <td>Info / tool-use (teal)</td>
+                <td class="hexcode">#6FC4B8</td>
+                <td class="hexcode">\x1b[38;2;111;196;184m</td>
+            </tr>
+            <tr>
+                <td>Accent / thinking (rose)</td>
+                <td class="hexcode">#F58AAE</td>
+                <td class="hexcode">\x1b[38;2;245;138;174m</td>
+            </tr>
+            <tr>
+                <td>Dim / muted</td>
+                <td class="hexcode">#9A9C93</td>
+                <td class="hexcode">\x1b[38;2;154;156;147m</td>
+            </tr>
+            <tr>
+                <td>Reset</td>
+                <td>—</td>
+                <td class="hexcode">\x1b[0m</td>
+            </tr>
+        </table>
+
+        <h2>6. Signature glyphs</h2>
+        <p class="sub">A tiered system: <b>Tier 1</b> renders correctly in any standard monospace font (Menlo, Consolas,
+            SF Mono, DejaVu Sans Mono) — this is the safe default. <b>Tier 2</b> is a richer treatment that only shows
+            if a Nerd Font is detected on the user's system, with automatic fallback to Tier 1.</p>
+
+        <h3>Tier 1 — universal fallback (default, always safe)</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Glyph</th>
+                <th>Codepoint</th>
+                <th>Why this one</th>
+            </tr>
+            <tr>
+                <td>Active prompt</td>
+                <td style="font-size:20px" class="hexcode">&#10095;</td>
+                <td class="hexcode">U+276F</td>
+                <td>Heavy single chevron — standard in Fish/Starship, wide font support, distinct from plain
+                    <code>&gt;</code></td>
+            </tr>
+            <tr>
+                <td>Prompt (busy/thinking variant)</td>
+                <td style="font-size:20px" class="hexcode">&#9670;</td>
+                <td class="hexcode">U+25C6</td>
+                <td>Solid diamond — reads as "agent turn," pairs with rose accent</td>
+            </tr>
+            <tr>
+                <td>Success</td>
+                <td style="font-size:18px" class="hexcode">&#10003;</td>
+                <td class="hexcode">U+2713</td>
+                <td>Universally supported check mark</td>
+            </tr>
+            <tr>
+                <td>Error</td>
+                <td style="font-size:18px" class="hexcode">&#10005;</td>
+                <td class="hexcode">U+2715</td>
+                <td>Cleaner and bolder than a plain <code>x</code>, still ubiquitous</td>
+            </tr>
+            <tr>
+                <td>Warning</td>
+                <td style="font-size:18px" class="hexcode">&#9888;</td>
+                <td class="hexcode">U+26A0</td>
+                <td>Standard warning triangle, wide support</td>
+            </tr>
+            <tr>
+                <td>Info / tool call</td>
+                <td style="font-size:18px" class="hexcode">&#8505;</td>
+                <td class="hexcode">U+2139</td>
+                <td>Info symbol, safe fallback</td>
+            </tr>
+            <tr>
+                <td>Running / spinner frame</td>
+                <td style="font-size:18px" class="hexcode">&#10251;&#10265;&#10233;&#10232;</td>
+                <td class="hexcode">U+2800 block</td>
+                <td>Braille-pattern spinner — same trick used by most modern CLIs (npm, cargo), animates smoothly,
+                    near-universal font support</td>
+            </tr>
+            <tr>
+                <td>Queued / pending</td>
+                <td style="font-size:18px" class="hexcode">&#9719;</td>
+                <td class="hexcode">U+25F7</td>
+                <td>Clock-quadrant, safe fallback</td>
+            </tr>
+            <tr>
+                <td>Cancelled</td>
+                <td style="font-size:18px" class="hexcode">&#8856;</td>
+                <td class="hexcode">U+2298</td>
+                <td>Circle-slash, unambiguous</td>
+            </tr>
+            <tr>
+                <td>Diff added</td>
+                <td style="font-size:16px" class="hexcode">+</td>
+                <td class="hexcode">U+002B</td>
+                <td>Kept as plain <code>+</code> — over-styling diffs hurts scanability</td>
+            </tr>
+            <tr>
+                <td>Diff removed</td>
+                <td style="font-size:16px" class="hexcode">-</td>
+                <td class="hexcode">U+002D</td>
+                <td>Plain <code>-</code>, same reasoning</td>
+            </tr>
+            <tr>
+                <td>Section divider</td>
+                <td style="font-size:16px" class="hexcode">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</td>
+                <td class="hexcode">U+2500</td>
+                <td>Box-drawing light horizontal, safe in all monospace fonts</td>
+            </tr>
+            <tr>
+                <td>File path marker</td>
+                <td style="font-size:16px" class="hexcode">&#8250;</td>
+                <td class="hexcode">U+203A</td>
+                <td>Single guillemet, reads as breadcrumb separator</td>
+            </tr>
+        </table>
+
+        <h3>Tier 2 — enhanced (Nerd Font detected)</h3>
+        <table>
+            <tr>
+                <th>Element</th>
+                <th>Use case</th>
+                <th>Nerd Font glyph name</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                <td>Active prompt</td>
+                <td>Rounded arrow divider</td>
+                <td class="hexcode">nf-pl-right_soft_divider</td>
+                <td>Powerline-style rounded arrow — Starship/Powerlevel10k standard</td>
+            </tr>
+            <tr>
+                <td>Brand mark (footer/banner)</td>
+                <td>Bird-adjacent icon</td>
+                <td class="hexcode">nf-md-bird</td>
+                <td>Consider commissioning a genuinely custom parakeet PUA glyph long-term — see note below</td>
+            </tr>
+            <tr>
+                <td>Success</td>
+                <td>Filled check circle</td>
+                <td class="hexcode">nf-fa-check_circle</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Error</td>
+                <td>Filled x circle</td>
+                <td class="hexcode">nf-fa-times_circle</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Git branch (if shown in status bar)</td>
+                <td>Branch icon</td>
+                <td class="hexcode">nf-dev-git_branch</td>
+                <td></td>
+            </tr>
+        </table>
+        <div class="contrast-note"><b>Detection tip:</b> don't ship Tier 2 by default. Detect via an env var convention
+            already used for this purpose (<code>$NERD_FONT</code>, the same one Starship/Oh-My-Posh check) or a
+            one-time setup prompt ("does this render as a solid triangle? ▶") rather than assuming. Always fall back to
+            Tier 1 if detection is inconclusive — a broken glyph on first launch is a worse first impression than a
+            slightly plainer one.</div>
+
+        <h3>Why not fully custom Private-Use-Area (PUA) glyphs</h3>
+        <p class="sub">Nerd Fonts inject icons into Unicode's Private Use Area — special codepoints that only resolve
+            into pictures if the right patched font is installed; without it they show as blank boxes. A fully custom
+            parakeet glyph (e.g. a tiny parakeet head as your prompt icon) is possible but would require distributing
+            your own patched font, which most users won't install just for one CLI tool. Recommended path: ship Tier 1
+            as default, Tier 2 using existing common Nerd Font icons (so users who already have one installed for
+            Starship/vim get the upgrade for free), and treat a fully custom bird glyph as a "nice to have later" rather
+            than a v1 requirement.</p>
+
+        <footer>Parakeet Agent brand color system · derived from rose-ringed parakeet plumage · dark-mode primary,
+            light-mode complete · WCAG AA-checked against respective backgrounds</footer>
+    </div>
+
+    <script>
+        function showTerm(mode) {
+            document.getElementById('term-dark').style.display = mode === 'dark' ? 'block' : 'none';
+            document.getElementById('term-light').style.display = mode === 'light' ? 'block' : 'none';
+            document.getElementById('btn-dark').classList.toggle('active', mode === 'dark');
+            document.getElementById('btn-light').classList.toggle('active', mode === 'light');
+            document.getElementById('btn-light').classList.toggle('light-active', mode === 'light');
+        }
+    </script>
+</body>
+
+</html>
