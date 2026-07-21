@@ -8,12 +8,16 @@ use ratatui::style::{Color, Style};
 
 /// Panel/app background. Brand kit: "on charcoal" contrast baseline
 /// used throughout the semantic color table.
-pub const BACKGROUND: Color = Color::Rgb(0x27, 0x29, 0x31);
+pub const BACKGROUND: Color = Color::Rgb(0x1d, 0x1f, 0x21);
+
+// pub const BACKGROUND: Color = Color::Rgb(0x27, 0x29, 0x31);
 
 // pub const BACKGROUND: Color = Color::Rgb(0x22, 0x24, 0x2a);
 
 /// "Parakeet Green" - brand kit's primary color, body plumage.
+
 pub const GREEN: Color = Color::Rgb(0x5F, 0xB8, 0x5C);
+// pub const GREEN: Color = Color::Rgb(0x5F, 0xB8, 0x5C);
 
 /// Brand kit's own darker green (--pk-green-d). Used for unfocused
 /// panel TEXT (titles, content) - confirmed working, dimmed but
